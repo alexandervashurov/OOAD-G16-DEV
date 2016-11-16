@@ -18,6 +18,14 @@ public class CtAdministrator extends CtAuthenticated {
 	
 	public PtBoolean vpNeedRecovery = new PtBoolean(false);
 	
+	public DtLogin login;
+	public DtKeyWord keyWord;
+	
+	public PtBoolean init(DtLogin aLogin, DtKeyWord aKeyWord){
+		login = aLogin;
+		keyWord = aKeyWord;
+		return new PtBoolean(true);
+	}
 	
 		
 }

@@ -155,7 +155,6 @@ public class AdminRecovView extends HorizontalLayout implements View, Button.Cli
 		recovButtonConfirmSms.setImmediate(true);
 		recovButtonConfirmSms.setVisible(false);
 		
-		
 		recovButtonConfirmEmail = new Button("Confirm", this);
 		recovButtonConfirmEmail.setWidth("110px");
 		recovButtonConfirmEmail.addStyleName(ValoTheme.BUTTON_PRIMARY);
