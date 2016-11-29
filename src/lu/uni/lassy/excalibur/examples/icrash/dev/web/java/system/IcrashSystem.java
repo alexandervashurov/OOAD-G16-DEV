@@ -224,9 +224,10 @@ public class IcrashSystem implements Serializable {
 		CtAdministrator ctAdminKey = new CtAdministrator();
 		DtLogin aLogin = new DtLogin(new PtString(adminName));
 		DtPassword aPwd = new DtPassword(new PtString("7WXC1359"));
-		DtKeyWord aKeyWord = new DtKeyWord(new PtString("february"));
-		ctAdmin.init(aLogin, aPwd);
 		
+				
+		ctAdmin.init(aLogin, aPwd);
+		log.debug(ctAdmin.login);
 		/*
 		PostF 7 the association between ctAdministrator and actAdministrator is made of 
 		one couple made of the jointly specified instances.
@@ -318,6 +319,7 @@ public class IcrashSystem implements Serializable {
 			}
 		}	
 			
+		
 		// PostF 1 - the actor gave incorrect data
 		PtString aMessage = new PtString(
 				"Wrong identification information! Please try again ...");
@@ -336,8 +338,112 @@ public class IcrashSystem implements Serializable {
 		}
 		return new PtBoolean(false);
 	}
+	
+public PtBoolean oeUpdatePass(DtLogin aDtLogin, DtPassword pass) throws Exception {
 		
-	public PtBoolean oeLogout() throws Exception {
+		// PreP 1 The system is started 
+		if (!isSystemStartedCheck())
+			return new PtBoolean(false);
+			
+		// check whether the credentials corresponds to an existing user
+		// this is done by checking if there exists an instance with
+		// such credential in the ctAuthenticatedInstances data structure
+		// ctAuthenticatedInstance = cmpSystemCtAuthenticated.get(aDtLogin);
+		ctAuthenticatedInstance = getCtAuthenticated(currentRequestingAuthenticatedActor);	
+		
+		if (ctAuthenticatedInstance != null) {
+
+			// PreP 2
+			if(ctAuthenticatedInstance.vpIsLogged.getValue()) {
+				log.debug("oeLogin: The actor is already logged in !");
+				return new PtBoolean(false);
+			}	
+			ctAuthenticatedInstance.pwd = pass;
+			
+				// PostF 1 - the actor gave correct data
+				PtString aMessage = new PtString("Password updated");
+				currentRequestingAuthenticatedActor.ieMessage(aMessage);
+				return new PtBoolean(true);
+			
+		}	
+			
+		
+		// PostF 1 - the actor gave incorrect data
+		PtString aMessage = new PtString(
+				"Wrong identification information! Please try again ...");
+		currentRequestingAuthenticatedActor.ieMessage(aMessage);
+
+		IcrashEnvironment env = IcrashEnvironment.getInstance();
+			
+		//notify to all administrators that exist in the environment
+		for (DtLogin adminKey : env.getAdministrators().keySet()) {
+			ActAdministrator admin = env.getActAdministrator(adminKey);
+			
+			log.debug("INSIDE update pass , actor's UI is "+admin.getActorUI());
+			
+			aMessage = new PtString("Intrusion tentative !");
+			admin.ieMessage(aMessage);
+		}
+		return new PtBoolean(false);
+	}
+	///////////
+	public PtBoolean oeLoginRecov(DtLogin aDtLogin, DtKeyWord aDtKeyWord) throws Exception {
+		
+		// PreP 1 The system is started 
+		if (!isSystemStartedCheck())
+			return new PtBoolean(false);
+			
+		// check whether the credentials corresponds to an existing user
+		// this is done by checking if there exists an instance with
+		// such credential in the ctAuthenticatedInstances data structure
+		// ctAuthenticatedInstance = cmpSystemCtAuthenticated.get(aDtLogin);
+		ctAuthenticatedInstance = getCtAuthenticated(currentRequestingAuthenticatedActor);	
+		
+		if (ctAuthenticatedInstance != null) {
+
+			// PreP 2
+			if(ctAuthenticatedInstance.vpIsLogged.getValue()) {
+				log.debug("oeLogin: The actor is already logged in !");
+				return new PtBoolean(false);
+			}	
+			PtBoolean logWordCheck = ctAuthenticatedInstance.login.eq(aDtLogin);
+			PtBoolean keyWordCheck = ctAuthenticatedInstance.keyWord.eq(aDtKeyWord);
+			if(keyWordCheck.getValue()&&logWordCheck.getValue()) {
+					
+				// PostP 1 - auth info is correct, so the administrator will now be known as logged in
+				currentRequestingAuthenticatedActor = assCtAuthenticatedActAuthenticated.get(ctAuthenticatedInstance);
+			
+				// PostF 1 - the actor gave correct data
+				PtString aMessage = new PtString("The actor gave correct data");
+				currentRequestingAuthenticatedActor.ieMessage(aMessage);
+				return new PtBoolean(true);
+			}
+		}	
+			
+		
+		// PostF 1 - the actor gave incorrect data
+		PtString aMessage = new PtString(
+				"Wrong identification information! Please try again ...");
+		currentRequestingAuthenticatedActor.ieMessage(aMessage);
+
+		IcrashEnvironment env = IcrashEnvironment.getInstance();
+			
+		//notify to all administrators that exist in the environment
+		for (DtLogin adminKey : env.getAdministrators().keySet()) {
+			ActAdministrator admin = env.getActAdministrator(adminKey);
+			
+			log.debug("INSIDE oeRecov CHECK, actor's UI is "+admin.getActorUI());
+			
+			aMessage = new PtString("Intrusion tentative !");
+			admin.ieMessage(aMessage);
+		}
+		return new PtBoolean(false);
+	}
+	
+	
+	///////////////////////
+	
+		public PtBoolean oeLogout() throws Exception {
 
 		// PreP 1 The system is started 
 		if (!isSystemStartedCheck())
@@ -1227,5 +1333,7 @@ public class IcrashSystem implements Serializable {
 		if (cmpSystemCtCrisis.values().stream().filter(t -> t.status == EtCrisisStatus.pending && propagate(t::handlingDelayPassed).getValue()).count() == 0)
 			throw new Exception("There are no unhandled crisises that have exceeded the handling delay");
 	}
+
+
 
 }

@@ -10,6 +10,7 @@
  ******************************************************************************/
 package lu.uni.lassy.excalibur.examples.icrash.dev.web.java.environment.actors;
 
+
 import java.io.Serializable;
 
 import org.apache.log4j.Logger;
@@ -19,6 +20,7 @@ import com.vaadin.ui.UI;
 
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.IcrashSystem;
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.design.ActorMessageBean;
+import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary.DtKeyWord;
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary.DtLogin;
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary.DtPassword;
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.types.stdlib.PtBoolean;
@@ -55,6 +57,37 @@ public class ActAuthenticated implements Serializable {
 		
 		if(res.getValue() == true) 
 			log.info("operation oeLogin successfully executed by the system");
+		
+		return res;
+	}
+	public PtBoolean oeLoginRecov(DtLogin aDtLogin, DtKeyWord aDtKeyWord) throws Exception {
+		
+		IcrashSystem sys = IcrashSystem.getInstance();
+		
+		//set up ActAuthenticated instance that performs the request
+		sys.setCurrentRequestingAuthenticatedActor(this);
+		
+		log.info("message ActAuthenticated.oeLogin sent to system");
+		PtBoolean res = sys.oeLoginRecov(aDtLogin, aDtKeyWord);
+		
+		if((res.getValue() == true))
+			log.info("password recov permission granted");
+		
+		return res;
+	}
+	
+public PtBoolean oeUpdatePass(DtLogin aDtLogin, DtPassword pass) throws Exception {
+		
+		IcrashSystem sys = IcrashSystem.getInstance();
+		
+		//set up ActAuthenticated instance that performs the request
+		sys.setCurrentRequestingAuthenticatedActor(this);
+		
+		log.info("message ActAuthenticated.oeLogin sent to system");
+		PtBoolean res = sys.oeUpdatePass(aDtLogin, pass);
+		
+		if(res.getValue() == true) 
+			log.info("password update successfully");
 		
 		return res;
 	}

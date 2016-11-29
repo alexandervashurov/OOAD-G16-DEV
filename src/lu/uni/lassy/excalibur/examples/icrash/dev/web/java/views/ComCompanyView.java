@@ -86,6 +86,15 @@ public class ComCompanyView extends ComCompanyDesign implements View, Serializab
 		secondSlider.setMin(0);
 		secondSlider.setMax(59);
 		
+//		hourSliderDead.setMin(0);
+//		hourSliderDead.setMax(23);
+//			
+//		minuteSliderDead.setMin(0);
+//		minuteSliderDead.setMax(59);
+//				
+//		secondSliderDead.setMin(0);
+//		secondSliderDead.setMax(59);
+		
 		date.setDateFormat("dd/MM/yyyy");
 		
 		hourSlider.addValueChangeListener(event -> {
@@ -105,6 +114,24 @@ public class ComCompanyView extends ComCompanyDesign implements View, Serializab
 			Integer i = d.intValue();
 			inputSecond.setValue(i.toString());
 		});
+//		
+//		hourSliderDead.addValueChangeListener(event -> {
+//			Double d = (double) (event.getProperty().getValue());
+//			Integer i = d.intValue();
+//			inputHourDead.setValue(i.toString());
+//		});
+//			
+//		minuteSliderDead.addValueChangeListener(event -> {
+//			Double d = (double) (event.getProperty().getValue());
+//			Integer i = d.intValue();
+//			inputMinuteDead.setValue(i.toString());
+//		});
+//				
+//		secondSliderDead.addValueChangeListener(event -> {
+//			Double d = (double) (event.getProperty().getValue());
+//			Integer i = d.intValue();
+//			inputSecondDead.setValue(i.toString());
+//		});
 		
 		inputHour.addBlurListener(event -> {
 			if (!inputHour.getValue().isEmpty()) {
@@ -133,11 +160,41 @@ public class ComCompanyView extends ComCompanyDesign implements View, Serializab
 			}
 		});
 		
+//		inputHourDead.addBlurListener(event -> {
+//			if (!inputHourDead.getValue().isEmpty()) {
+//				String inputValue = new String(inputHourDead.getValue());
+//				Double doubleValue = Double.valueOf(inputValue);
+//				if (doubleValue >= 0 && doubleValue <= 23)
+//					hourSliderDead.setValue(doubleValue);
+//			}
+//		});
+//		
+//		inputMinuteDead.addBlurListener(event -> {
+//			if (!inputMinuteDead.getValue().isEmpty()) {
+//				String inputValue = new String(inputMinuteDead.getValue());
+//				Double doubleValue = Double.valueOf(inputValue);
+//				if (doubleValue >= 0 && doubleValue <= 59)
+//					minuteSliderDead.setValue(doubleValue);
+//			}
+//		});
+//		
+//		inputSecondDead.addBlurListener(event -> {
+//			if (!inputSecondDead.getValue().isEmpty()) {
+//				String inputValue = new String(inputSecondDead.getValue());
+//				Double doubleValue = Double.valueOf(inputValue);
+//				if (doubleValue >= 0 && doubleValue <= 59)
+//					secondSliderDead.setValue(doubleValue);
+//			}
+//		});
 		sendAlertBtn.setClickShortcut(KeyCode.ENTER);
 		
 		sendAlertBtn.addClickListener(event -> {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(date.getValue());
+			
+//			Calendar calDead = Calendar.getInstance();
+//			calDead.setTime(date.getValue());
+			
 			
 			log.info(typeOfPerson.getValue().toString());
 			log.info(phoneNr.getValue());
@@ -163,7 +220,12 @@ public class ComCompanyView extends ComCompanyDesign implements View, Serializab
 					new DtHour(new PtInteger(Integer.parseInt(inputHour.getValue()))),
 					new DtMinute(new PtInteger(Integer.parseInt(inputMinute.getValue()))),
 					new DtSecond(new PtInteger(Integer.parseInt(inputSecond.getValue()))));
-				
+			
+//			DtTime aDtTimeDead = new DtTime(
+//					new DtHour(new PtInteger(Integer.parseInt(inputHourDead.getValue()))),
+//					new DtMinute(new PtInteger(Integer.parseInt(inputMinuteDead.getValue()))),
+//					new DtSecond(new PtInteger(Integer.parseInt(inputSecondDead.getValue()))));
+//				
 			DtPhoneNumber aDtPhoneNumber = new DtPhoneNumber(new PtString(phoneNr.getValue()));
 				
 			DtGPSLocation aDtGPSLocation = new DtGPSLocation(
@@ -190,6 +252,7 @@ public class ComCompanyView extends ComCompanyDesign implements View, Serializab
 		int nowSecondInInt = nowTime.second.value.getValue();
 		Double nowSecondInDouble = Double.valueOf((double)nowSecondInInt);
 		secondSlider.setValue(nowSecondInDouble);
+		
 	}
 	
 	@Override

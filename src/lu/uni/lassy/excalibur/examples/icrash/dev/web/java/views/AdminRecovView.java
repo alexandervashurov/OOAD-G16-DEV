@@ -1,6 +1,5 @@
 package lu.uni.lassy.excalibur.examples.icrash.dev.web.java.views;
 
-
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -21,6 +20,7 @@ import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.environment.IcrashEnv
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.environment.actors.ActAdministrator;
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.IcrashSystem;
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary.CtAdministrator;
+import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary.DtKeyWord;
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary.DtLogin;
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary.DtPassword;
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.types.stdlib.PtBoolean;
@@ -41,21 +41,21 @@ public class AdminRecovView extends HorizontalLayout implements View, Button.Cli
 
 	IcrashSystem sys = IcrashSystem.getInstance();
 	IcrashEnvironment env = IcrashEnvironment.getInstance();
-	
+
 	ActAdministrator actAdmin = env.getActAdministrator(new DtLogin(new PtString(AdminActors.values[0].name())));
-	CtAdministrator ctAdmin =  (CtAdministrator) sys.getCtAuthenticated(actAdmin);
+	CtAdministrator ctAdmin = (CtAdministrator) sys.getCtAuthenticated(actAdmin);
 
 	private Label welcomeText;
 	private Label secondText;
 	private Label thirdText;
-	
+
 	private TextField recovTextSms;
 	private TextField recovTextEmail;
 	private TextField recovTextLogin;
 	private TextField recovTextKey;
 	private TextField recovTextNewPass;
 	private TextField recovTextRepeatPass;
-	
+
 	private Button recovButtonBack;
 	private Button recovButtonSms;
 	private Button recovButtonEmail;
@@ -64,173 +64,169 @@ public class AdminRecovView extends HorizontalLayout implements View, Button.Cli
 	private Button recovButtonConfirmEmail;
 	private Button recovButtonConfirmKey;
 	private Button recovButtonConfirmPass;
-	
-	
+
 	transient Logger log = Log4JUtils.getInstance().getLogger();
-	
+
 	public AdminRecovView() {
-		
+
 		actAdmin.setActorUI(UI.getCurrent());
 		env.setActAdministrator(actAdmin.getName(), actAdmin);
 		IcrashSystem.assCtAuthenticatedActAuthenticated.replace(ctAdmin, actAdmin);
-		
+
 		log.debug("CHECK: run recovery");
-		
+
 		welcomeText = new Label("Password Recovery");
 		welcomeText.setWidth("200px");
 		welcomeText.setSizeUndefined();
-		
+
 		secondText = new Label("");
 		secondText.setSizeUndefined();
-		
+
 		thirdText = new Label("");
 		thirdText.setSizeUndefined();
-		
+
 		recovTextSms = new TextField("");
 		recovTextSms.setWidth("250px");
 		recovTextSms.setImmediate(true);
 		recovTextSms.setVisible(false);
 		recovTextSms.setInputPrompt("Write your phone number");
-		
+
 		recovTextEmail = new TextField("");
 		recovTextEmail.setWidth("250px");
 		recovTextEmail.setImmediate(true);
 		recovTextEmail.setVisible(false);
 		recovTextEmail.setInputPrompt("Write your phone email");
-		
+
 		recovTextLogin = new TextField("");
 		recovTextLogin.setWidth("250px");
 		recovTextLogin.setImmediate(true);
 		recovTextLogin.setVisible(false);
 		recovTextLogin.setInputPrompt("Write your Login");
-		
+
 		recovTextKey = new TextField("");
 		recovTextKey.setWidth("250px");
 		recovTextKey.setImmediate(true);
 		recovTextKey.setVisible(false);
 		recovTextKey.setInputPrompt("Write your Keyword");
 
-		
 		recovTextNewPass = new TextField("");
 		recovTextNewPass.setWidth("250px");
 		recovTextNewPass.setImmediate(true);
 		recovTextNewPass.setVisible(false);
 		recovTextNewPass.setInputPrompt("Write your new password");
-		
+
 		recovTextRepeatPass = new TextField("");
 		recovTextRepeatPass.setWidth("250px");
 		recovTextRepeatPass.setImmediate(true);
 		recovTextRepeatPass.setVisible(false);
 		recovTextRepeatPass.setInputPrompt("Repeat your password");
-		
-		
+
 		recovButtonBack = new Button("Back to Login", this);
 		recovButtonBack.setWidth("200px");
 		recovButtonBack.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		recovButtonBack.setImmediate(true);
-		recovButtonBack.addClickListener((e)->loginButtonClick(e));
-	
-		
+		recovButtonBack.addClickListener((e) -> loginButtonClick(e));
+
 		recovButtonSms = new Button("Recovery by SMS", this);
 		recovButtonSms.setWidth("200px");
 		recovButtonSms.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		recovButtonSms.setImmediate(true);
-		recovButtonSms.addClickListener((e) ->smsButtonClick(e));
-		
+		recovButtonSms.addClickListener((e) -> smsButtonClick(e));
+
 		recovButtonEmail = new Button("Recovery by Email", this);
 		recovButtonEmail.setWidth("200px");
 		recovButtonEmail.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		recovButtonEmail.setImmediate(true);
-		recovButtonEmail.addClickListener((e)->emailButtonClick(e));
-		
+		recovButtonEmail.addClickListener((e) -> emailButtonClick(e));
+
 		recovButtonKey = new Button("Recovery by Keyword", this);
 		recovButtonKey.setWidth("200px");
 		recovButtonKey.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		recovButtonKey.setImmediate(true);
-		recovButtonKey.addClickListener((e)->keyButtonClick(e));
-		
+		recovButtonKey.addClickListener((e) -> keyButtonClick(e));
+
 		recovButtonConfirmSms = new Button("Confirm", this);
 		recovButtonConfirmSms.setWidth("110px");
 		recovButtonConfirmSms.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		recovButtonConfirmSms.setImmediate(true);
 		recovButtonConfirmSms.setVisible(false);
-		
+		recovButtonConfirmSms.addClickListener((e) -> smsConfButtonClick(e));
+
 		recovButtonConfirmEmail = new Button("Confirm", this);
 		recovButtonConfirmEmail.setWidth("110px");
 		recovButtonConfirmEmail.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		recovButtonConfirmEmail.setImmediate(true);
 		recovButtonConfirmEmail.setVisible(false);
-		
+		recovButtonConfirmEmail.addClickListener((e) -> emailConfButtonClick(e));
+
 		recovButtonConfirmKey = new Button("Confirm", this);
 		recovButtonConfirmKey.setWidth("110px");
 		recovButtonConfirmKey.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		recovButtonConfirmKey.setImmediate(true);
-		recovButtonConfirmKey.addClickListener((e)->confButtonClick(e));
 		recovButtonConfirmKey.setVisible(false);
-		
+		recovButtonConfirmKey.addClickListener((e) -> keyConfButtonClick(e));
+
 		recovButtonConfirmPass = new Button("Confirm", this);
 		recovButtonConfirmPass.setWidth("110px");
 		recovButtonConfirmPass.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		recovButtonConfirmPass.setImmediate(true);
 		recovButtonConfirmPass.setVisible(false);
+		recovButtonConfirmPass.addClickListener((e) -> passConfButtonClick(e));
 
-		
-		FormLayout abc = new FormLayout(recovTextSms, recovTextEmail, recovTextLogin, recovTextKey, recovTextNewPass, recovTextRepeatPass);
+		FormLayout abc = new FormLayout(recovTextSms, recovTextEmail, recovTextLogin, recovTextKey, recovTextNewPass,
+				recovTextRepeatPass);
 		FormLayout FLA = new FormLayout(recovButtonSms, recovButtonEmail, recovButtonKey, recovButtonBack);
-		FormLayout conf = new FormLayout(recovButtonConfirmSms, recovButtonConfirmEmail, recovButtonConfirmKey, recovButtonConfirmPass);
+		FormLayout conf = new FormLayout(recovButtonConfirmSms, recovButtonConfirmEmail, recovButtonConfirmKey,
+				recovButtonConfirmPass);
 		VerticalLayout welcomeLayout = new VerticalLayout(welcomeText, FLA);
-		VerticalLayout leftVL = new VerticalLayout(welcomeLayout); 
+		VerticalLayout leftVL = new VerticalLayout(welcomeLayout);
 		VerticalLayout secondLayout = new VerticalLayout(secondText, abc);
 		VerticalLayout middleVL = new VerticalLayout(secondLayout);
 		VerticalLayout confLayout = new VerticalLayout(thirdText, conf);
 		VerticalLayout rightVL = new VerticalLayout(confLayout);
-		
+
 		addComponent(leftVL);
 		addComponent(middleVL);
 		addComponent(rightVL);
-		
+
 		welcomeLayout.setComponentAlignment(welcomeText, Alignment.MIDDLE_LEFT);
 		welcomeLayout.setComponentAlignment(FLA, Alignment.MIDDLE_LEFT);
-		
-		
+
 		secondLayout.setComponentAlignment(secondText, Alignment.MIDDLE_CENTER);
 		secondLayout.setComponentAlignment(abc, Alignment.MIDDLE_CENTER);
-		
+
 		confLayout.setComponentAlignment(thirdText, Alignment.MIDDLE_RIGHT);
 		confLayout.setComponentAlignment(conf, Alignment.MIDDLE_RIGHT);
-		
+
 		setSizeFull();
-		
+
 		FLA.setSizeUndefined();
 		abc.setSizeUndefined();
 		conf.setSizeUndefined();
-		
+
 		welcomeLayout.setSizeUndefined();
 		secondLayout.setSizeUndefined();
 		confLayout.setSizeUndefined();
 		rightVL.setSizeFull();
 		leftVL.setSizeFull();
 		middleVL.setSizeFull();
-		
+
 		leftVL.setComponentAlignment(welcomeLayout, Alignment.MIDDLE_RIGHT);
 		middleVL.setComponentAlignment(secondLayout, Alignment.MIDDLE_CENTER);
 		rightVL.setComponentAlignment(confLayout, Alignment.MIDDLE_CENTER);
-		
-		
-		
-		
+
 		setExpandRatio(leftVL, 10);
 		setExpandRatio(middleVL, 10);
 		setExpandRatio(rightVL, 10);
 	}
 
-	public void loginButtonClick(ClickEvent event){
-		CtAdministrator ctAdmin =  (CtAdministrator) sys.getCtAuthenticated(actAdmin);
+	public void loginButtonClick(ClickEvent event) {
+		CtAdministrator ctAdmin = (CtAdministrator) sys.getCtAuthenticated(actAdmin);
 		ctAdmin.vpNeedRecovery = new PtBoolean(false);
 		Page.getCurrent().reload();
 	}
-	
-	public void smsButtonClick(ClickEvent event){
+
+	public void smsButtonClick(ClickEvent event) {
 		recovTextSms.setVisible(true);
 		recovTextEmail.setVisible(false);
 		recovTextLogin.setVisible(false);
@@ -241,10 +237,10 @@ public class AdminRecovView extends HorizontalLayout implements View, Button.Cli
 		recovButtonConfirmEmail.setVisible(false);
 		recovButtonConfirmKey.setVisible(false);
 		recovButtonConfirmPass.setVisible(false);
-		
-		
+
 	}
-	public void emailButtonClick(ClickEvent event){
+
+	public void emailButtonClick(ClickEvent event) {
 		recovTextSms.setVisible(false);
 		recovTextEmail.setVisible(true);
 		recovTextLogin.setVisible(false);
@@ -255,9 +251,10 @@ public class AdminRecovView extends HorizontalLayout implements View, Button.Cli
 		recovButtonConfirmEmail.setVisible(true);
 		recovButtonConfirmKey.setVisible(false);
 		recovButtonConfirmPass.setVisible(false);
-		
+
 	}
-	public void keyButtonClick(ClickEvent event){
+
+	public void keyButtonClick(ClickEvent event) {
 		recovTextSms.setVisible(false);
 		recovTextEmail.setVisible(false);
 		recovTextLogin.setVisible(true);
@@ -268,9 +265,10 @@ public class AdminRecovView extends HorizontalLayout implements View, Button.Cli
 		recovButtonConfirmEmail.setVisible(false);
 		recovButtonConfirmKey.setVisible(true);
 		recovButtonConfirmPass.setVisible(false);
-		
+
 	}
-	public void confButtonClick(ClickEvent event){
+
+	public void confButtonClick(ClickEvent event) {
 		recovTextSms.setVisible(false);
 		recovTextEmail.setVisible(false);
 		recovTextLogin.setVisible(false);
@@ -280,22 +278,77 @@ public class AdminRecovView extends HorizontalLayout implements View, Button.Cli
 		recovButtonConfirmSms.setVisible(false);
 		recovButtonConfirmEmail.setVisible(false);
 		recovButtonConfirmKey.setVisible(false);
-		recovButtonConfirmPass.setVisible(true);	
+		recovButtonConfirmPass.setVisible(true);
 	}
-	
-	
+
+	public void smsConfButtonClick(ClickEvent event) {
+
+	}
+
+	public void emailConfButtonClick(ClickEvent event) {
+
+	}
+
+	public void keyConfButtonClick(ClickEvent event) {
+		DtLogin login = new DtLogin(new PtString(recovTextLogin.getValue()));
+		DtKeyWord keyWord = new DtKeyWord(new PtString(recovTextKey.getValue()));
+		if(login.value.getValue().isEmpty() || keyWord.value.getValue().isEmpty()){
+			log.info("very empty");
+			return;
+		}
+		try {
+			boolean res = actAdmin.oeLoginRecov(login, keyWord).getValue();
+			if(res){
+				confButtonClick(event);
+			}else{
+				log.info("Wrong Login or Keyword");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void passConfButtonClick(ClickEvent event) {
+		
+		DtLogin login = new DtLogin(new PtString(recovTextLogin.getValue()));
+		String pass = recovTextNewPass.getValue();
+		if((pass == null || !pass.equals(recovTextRepeatPass.getValue())) || (pass.length()<8)){
+			log.info("password not equals or null or <8 symbols");
+			return;
+		}
+		DtPassword aPass = new DtPassword(new PtString(pass));
+		try {
+			boolean res = actAdmin.oeUpdatePass(login, aPass).getValue();
+			if(res){
+				recovTextSms.setVisible(false);
+				recovTextEmail.setVisible(false);
+				recovTextLogin.setVisible(false);
+				recovTextKey.setVisible(false);
+				recovTextNewPass.setVisible(false);
+				recovTextRepeatPass.setVisible(false);
+				recovButtonConfirmSms.setVisible(false);
+				recovButtonConfirmEmail.setVisible(false);
+				recovButtonConfirmKey.setVisible(false);
+				recovButtonConfirmPass.setVisible(false);;
+			}else{
+				log.info("The passwords are not equals");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 	@Override
 	public void buttonClick(ClickEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
-	
-

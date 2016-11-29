@@ -11,6 +11,7 @@
 package lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary;
 
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.types.stdlib.PtBoolean;
+import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.utils.Log4JUtils;
 
 public class CtAdministrator extends CtAuthenticated {
 
@@ -18,10 +19,10 @@ public class CtAdministrator extends CtAuthenticated {
 	
 	public PtBoolean vpNeedRecovery = new PtBoolean(false);
 	
-	public DtLogin login;
 	public DtKeyWord keyWord;
 	
 	public PtBoolean init(DtLogin aLogin, DtKeyWord aKeyWord){
+		Log4JUtils.getInstance().getLogger().debug("Invoke admin init");
 		login = aLogin;
 		keyWord = aKeyWord;
 		return new PtBoolean(true);

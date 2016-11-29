@@ -98,7 +98,7 @@ public class CoordMobileAuthView extends TabBarView implements View, Serializabl
 		
 		alertsTable = new Grid();
 		alertsTable.setContainerDataSource(actCoordinator.getAlertsContainer());
-		alertsTable.setColumnOrder("ID", "date", "time", "longitude", "latitude", "comment", "status");
+		alertsTable.setColumnOrder("ID", "date", "time", "longitude", "latitude", "comment", "passed","remaining","deadline","status");
 		alertsTable.setSelectionMode(SelectionMode.SINGLE);
 
 		alertsTable.setWidth("100%");
@@ -180,7 +180,7 @@ public class CoordMobileAuthView extends TabBarView implements View, Serializabl
 		
 		crisesTable = new Grid();
 		crisesTable.setContainerDataSource(actCoordinator.getCrisesContainer());
-		crisesTable.setColumnOrder("ID", "date", "time", "type", "longitude", "latitude", "comment", "status");
+		crisesTable.setColumnOrder("ID", "date", "time", "type", "longitude", "latitude", "comment", "passed","remaining","deadline","status");
 		crisesTable.setSelectionMode(SelectionMode.SINGLE);
 
 		crisesTable.setWidth("100%");

@@ -13,6 +13,8 @@ package lu.uni.lassy.excalibur.examples.icrash.dev.web.java.system.types.primary
 
 import java.io.Serializable;
 import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.types.stdlib.PtBoolean;
+import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.types.stdlib.PtString;
+import lu.uni.lassy.excalibur.examples.icrash.dev.web.java.utils.Log4JUtils;
 
 public abstract class CtAuthenticated implements Serializable {
 
@@ -21,10 +23,12 @@ public abstract class CtAuthenticated implements Serializable {
 	public DtLogin login;
 	public DtPassword pwd;
 	public PtBoolean vpIsLogged;
+	public DtKeyWord keyWord=new DtKeyWord(new PtString("collector"));
 
 	
 	public PtBoolean init(DtLogin aLogin, DtPassword aPwd){
 			login = aLogin;
+			Log4JUtils.getInstance().getLogger().debug(login);
 			pwd = aPwd;
 		
 			vpIsLogged = new PtBoolean(false); 

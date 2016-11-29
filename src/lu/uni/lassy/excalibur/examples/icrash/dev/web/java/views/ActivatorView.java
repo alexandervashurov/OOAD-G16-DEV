@@ -53,6 +53,9 @@ public class ActivatorView extends ActivatorDesign implements View, Serializable
 		secondSlider.setMin(0);
 		secondSlider.setMax(59);
 		
+		
+		
+		
 		date.setDateFormat("dd/MM/yyyy");
 		
 		hourSlider.addValueChangeListener(event -> {
@@ -72,6 +75,9 @@ public class ActivatorView extends ActivatorDesign implements View, Serializable
 			Integer i = d.intValue();
 			inputSecond.setValue(i.toString());
 		});
+		
+	
+		
 		
 		inputHour.addBlurListener(event -> {
 			if (!inputHour.getValue().isEmpty()) {
@@ -100,6 +106,8 @@ public class ActivatorView extends ActivatorDesign implements View, Serializable
 			}
 		});
 		
+	
+		
 		setTimeBtn.setClickShortcut(KeyCode.ENTER);
 		
 		setTimeBtn.addClickListener(event -> {
@@ -123,6 +131,8 @@ public class ActivatorView extends ActivatorDesign implements View, Serializable
 									new PtInteger(Integer.parseInt(inputSecond.getValue())))))); 
 		});  
 		
+		
+		
 		nowBtn.addClickListener(e -> {
 			DtTime nowTime = ICrashUtils.getCurrentTime();
 			date.setValue(new Date());
@@ -139,6 +149,7 @@ public class ActivatorView extends ActivatorDesign implements View, Serializable
 			Double nowSecondInDouble = Double.valueOf((double)nowSecondInInt);
 			secondSlider.setValue(nowSecondInDouble);
 		});
+	
 	}
 	
 	@Override

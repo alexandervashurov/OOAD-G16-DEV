@@ -40,6 +40,8 @@ public class ActivatorDesign extends VerticalLayout {
 	protected Slider secondSlider;
 	protected TextField inputSecond;
 	protected Button setTimeBtn;
+	
+	
 
 	public ActivatorDesign() {
 		Design.read(this);
